@@ -1,5 +1,13 @@
 class Sprite {
-  constructor({ position, velocity, image, frames = { max: 1 }, sprites }) {
+  constructor({
+    position,
+    velocity,
+    image,
+    frames = { max: 1 },
+    sprites,
+    dWidth,
+    dHeight,
+  }) {
     this.position = position;
     this.image = image;
     this.frames = { ...frames, val: 0, elapsed: 0 };
@@ -11,6 +19,8 @@ class Sprite {
 
     this.moving = false;
     this.sprites = sprites;
+    this.dWidth = dWidth;
+    this.dHeight = dHeight;
   }
 
   draw = () => {
@@ -22,8 +32,8 @@ class Sprite {
       this.image.height,
       this.position.x,
       this.position.y,
-      this.image.width / this.frames.max,
-      this.image.height
+      this.dWidth ?? this.image.width / this.frames.max,
+      this.dHeight ?? this.image.height
     );
 
     if (!this.moving) return;

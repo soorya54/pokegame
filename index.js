@@ -11,21 +11,6 @@ for (let i = 0; i < collisions.length; i += 70) {
   collisionsMap.push(collisions.slice(i, i + 70));
 }
 
-class Boundary {
-  static width = 48;
-  static height = 48;
-  constructor({ position }) {
-    this.position = position;
-    this.width = 48;
-    this.height = 48;
-  }
-
-  draw() {
-    c.fillStyle = "rgba(255, 0, 0, 0)";
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-  }
-}
-
 const offset = {
   x: -735,
   y: -650,
@@ -50,35 +35,11 @@ collisionsMap.forEach((row, i) => {
 const image = new Image();
 image.src = "./images/pelletTown.png";
 
+const foregroundImage = new Image();
+foregroundImage.src = "./images/foregroundObjects.png";
+
 const playerImage = new Image();
 playerImage.src = "./images/playerDown.png";
-
-class Sprite {
-  constructor({ position, velocity, image, frames = { max: 1 } }) {
-    this.position = position;
-    this.image = image;
-    this.frames = frames;
-
-    this.image.onload = () => {
-      this.width = this.image.width / this.frames.max;
-      this.height = this.image.height;
-    };
-  }
-
-  draw = () => {
-    c.drawImage(
-      this.image,
-      0,
-      0,
-      this.image.width / this.frames.max,
-      this.image.height,
-      this.position.x,
-      this.position.y,
-      this.image.width / this.frames.max,
-      this.image.height
-    );
-  };
-}
 
 const player = new Sprite({
   position: {
@@ -92,6 +53,11 @@ const player = new Sprite({
 const background = new Sprite({
   position: { x: offset.x, y: offset.y },
   image: image,
+});
+
+const foreground = new Sprite({
+  position: { x: offset.x, y: offset.y },
+  image: foregroundImage,
 });
 
 const keys = {
@@ -109,7 +75,7 @@ const keys = {
   },
 };
 
-const movables = [background, ...boundaries];
+const movables = [foreground, background, ...boundaries];
 
 const rectangularCollision = ({ rectangle1, rectangle2 }) => {
   return (
@@ -127,6 +93,7 @@ const animate = () => {
     boundary.draw();
   });
   player.draw();
+  foreground.draw();
 
   let moving = true;
   if (keys.w.pressed && lastKey === "w") {

@@ -8,6 +8,7 @@ class Sprite {
     sprites,
     isEnemy = false,
     rotation = 0,
+    name,
     dWidth,
     dHeight,
   }) {
@@ -26,6 +27,7 @@ class Sprite {
     this.health = 100;
     this.isEnemy = isEnemy;
     this.rotation = rotation;
+    this.name = name;
 
     this.dWidth = dWidth;
     this.dHeight = dHeight;
@@ -69,6 +71,10 @@ class Sprite {
   };
 
   attack = ({ attack, recipient, renderedSprites }) => {
+    document.querySelector("#dialogueBox").style.display = "block";
+    document.querySelector("#dialogueBox").innerHTML =
+      this.name + " used " + attack.name;
+
     this.health -= attack.damage;
     let healthBar = this.isEnemy ? "#playerHealthBar" : "#enemyHealthBar";
 

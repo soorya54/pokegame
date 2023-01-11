@@ -6,8 +6,46 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
 
-c.fillStyle = "white";
-c.fillRect(0, 0, canvas.width, canvas.height);
+const collisionsMap = [];
+for (let i = 0; i < collisions.length; i += 70) {
+  collisionsMap.push(collisions.slice(i, i + 70));
+}
+
+class Boundary {
+  static width = 48;
+  static height = 48;
+  constructor({ position }) {
+    this.position = position;
+    this.width = 48;
+    this.height = 48;
+  }
+
+  draw() {
+    c.fillStyle = "red";
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
+}
+
+const offset = {
+  x: -735,
+  y: -650,
+};
+
+const boundaries = [];
+collisionsMap.forEach((row, i) => {
+  row.forEach((symbol, j) => {
+    if (symbol === 1025) {
+      boundaries.push(
+        new Boundary({
+          position: {
+            x: j * Boundary.width + offset.x,
+            y: i * Boundary.height + offset.y,
+          },
+        })
+      );
+    }
+  });
+});
 
 const image = new Image();
 image.src = "./images/pelletTown.png";
@@ -26,7 +64,10 @@ class Sprite {
   };
 }
 
-const background = new Sprite({ position: { x: -785, y: -650 }, image: image });
+const background = new Sprite({
+  position: { x: offset.x, y: offset.y },
+  image: image,
+});
 
 const keys = {
   w: {
@@ -46,6 +87,9 @@ const keys = {
 const animate = () => {
   window.requestAnimationFrame(animate);
   background.draw();
+  boundaries.forEach((boundary) => {
+    boundary.draw();
+  });
 
   c.drawImage(
     playerImage,

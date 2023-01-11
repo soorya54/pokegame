@@ -306,33 +306,32 @@ const emby = new Sprite({
   animate: true,
 });
 
+const renderedSprites = [draggle, emby];
+
 const animateBattle = () => {
   window.requestAnimationFrame(animateBattle);
   battleBackground.draw();
-  draggle.draw();
-  emby.draw();
+
+  renderedSprites.forEach((sprite) => {
+    sprite.draw();
+  });
 };
 
 animateBattle();
 
+// event listeners for buttons
 document.querySelectorAll("button").forEach((button) => {
-  button.addEventListener("click", () => {
+  button.addEventListener("click", (e) => {
     emby.attack({
-      attack: {
-        name: "Tackle",
-        damage: 10,
-        type: "Normal",
-      },
+      attack: attacks[e.currentTarget.innerHTML],
       recipient: draggle,
+      renderedSprites,
     });
 
     // draggle.attack({
-    //   attack: {
-    //     name: "Tackle",
-    //     damage: 10,
-    //     type: "Normal",
-    //   },
+    //   attack: attacks[e.currentTarget.innerHTML],
     //   recipient: emby,
+    //   renderedSprites,
     // });
   });
 });

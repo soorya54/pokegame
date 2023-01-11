@@ -7,7 +7,6 @@ class Sprite {
     animate = false,
     sprites,
     rotation = 0,
-    isFireball = false,
     dWidth,
     dHeight,
   }) {
@@ -28,22 +27,18 @@ class Sprite {
 
     this.dWidth = dWidth;
     this.dHeight = dHeight;
-
-    if (isFireball) {
-      console.log(this);
-    }
   }
 
   draw = () => {
     c.save();
     c.translate(
       this.position.x + this.width / 2,
-      this.position.y + this.health / 2
+      this.position.y + this.height / 2
     );
     c.rotate(this.rotation);
     c.translate(
       -this.position.x - this.width / 2,
-      -this.position.y - this.health / 2
+      -this.position.y - this.height / 2
     );
     c.globalAlpha = this.opacity;
     c.drawImage(
@@ -157,20 +152,14 @@ class Monster extends Sprite {
           frames: { max: 4, hold: 10 },
           animate: true,
           rotation,
-          isFireball: true,
         });
         renderedSprites.splice(1, 0, fireball);
-        // renderedSprites.push(fireball)
-        // console.log(renderedSprites);
 
         gsap.to(fireball.position, {
           x: recipient.position.x,
           y: recipient.position.y,
           onComplete: () => {
             renderedSprites.splice(1, 1);
-            // console.log(renderedSprites);
-
-            // renderedSprites.pop();
 
             // enemy gets hit
             gsap.to(healthBar, {

@@ -1,8 +1,8 @@
-const battleBackgoundImage = new Image();
-battleBackgoundImage.src = "./images/battleBackground.png";
+const battleBackgroundImage = new Image();
+battleBackgroundImage.src = "./images/battleBackground.png";
 const battleBackground = new Sprite({
   position: { x: 0, y: 0 },
-  image: battleBackgoundImage,
+  image: battleBackgroundImage,
   dWidth: canvas.width,
   dHeight: canvas.height,
 });

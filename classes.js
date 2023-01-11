@@ -3,7 +3,8 @@ class Sprite {
     position,
     velocity,
     image,
-    frames = { max: 1 },
+    frames = { max: 1, hold: 10 },
+    animate = false,
     sprites,
     dWidth,
     dHeight,
@@ -17,7 +18,7 @@ class Sprite {
       this.height = this.image.height;
     };
 
-    this.moving = false;
+    this.animate = animate;
     this.sprites = sprites;
     this.dWidth = dWidth;
     this.dHeight = dHeight;
@@ -26,7 +27,7 @@ class Sprite {
   draw = () => {
     c.drawImage(
       this.image,
-      this.frames.val * 48,
+      this.frames.val * this.width,
       0,
       this.image.width / this.frames.max,
       this.image.height,
@@ -36,13 +37,13 @@ class Sprite {
       this.dHeight ?? this.image.height
     );
 
-    if (!this.moving) return;
+    if (!this.animate) return;
 
     if (this.frames.max > 1) {
       this.frames.elapsed++;
     }
 
-    if (this.frames.elapsed % 10 === 0) {
+    if (this.frames.elapsed % this.frames.hold === 0) {
       if (this.frames.val < this.frames.max - 1) this.frames.val++;
       else this.frames.val = 0;
     }

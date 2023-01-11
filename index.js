@@ -139,7 +139,7 @@ const animate = () => {
   foreground.draw();
 
   let moving = true;
-  player.moving = false;
+  player.animate = false;
 
   if (battle.initiated) return;
 
@@ -198,7 +198,7 @@ const animate = () => {
   }
 
   if (keys.w.pressed && lastKey === "w") {
-    player.moving = true;
+    player.animate = true;
     player.image = player.sprites.up;
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i];
@@ -217,7 +217,7 @@ const animate = () => {
     }
     moving && movables.forEach((movable) => (movable.position.y += 3));
   } else if (keys.a.pressed && lastKey === "a") {
-    player.moving = true;
+    player.animate = true;
     player.image = player.sprites.left;
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i];
@@ -236,7 +236,7 @@ const animate = () => {
     }
     moving && movables.forEach((movable) => (movable.position.x += 3));
   } else if (keys.s.pressed && lastKey === "s") {
-    player.moving = true;
+    player.animate = true;
     player.image = player.sprites.down;
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i];
@@ -255,7 +255,7 @@ const animate = () => {
     }
     moving && movables.forEach((movable) => (movable.position.y -= 3));
   } else if (keys.d.pressed && lastKey === "d") {
-    player.moving = true;
+    player.animate = true;
     player.image = player.sprites.right;
     for (let i = 0; i < boundaries.length; i++) {
       const boundary = boundaries[i];
@@ -287,9 +287,29 @@ const battleBackground = new Sprite({
   dHeight: canvas.height,
 });
 
+const draggleImage = new Image();
+draggleImage.src = "./images/draggleSprite.png";
+const draggle = new Sprite({
+  position: { x: 800, y: 300 },
+  image: draggleImage,
+  frames: { max: 4, hold: 30 },
+  animate: true,
+});
+
+const embyImage = new Image();
+embyImage.src = "./images/embySprite.png";
+const emby = new Sprite({
+  position: { x: 300, y: 700 },
+  image: embyImage,
+  frames: { max: 4, hold: 30 },
+  animate: true,
+});
+
 const animateBattle = () => {
   window.requestAnimationFrame(animateBattle);
   battleBackground.draw();
+  draggle.draw();
+  emby.draw();
 };
 
 animateBattle();

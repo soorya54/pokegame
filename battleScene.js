@@ -7,28 +7,16 @@ const battleBackground = new Sprite({
   dHeight: canvas.height,
 });
 
-const draggleImage = new Image();
-draggleImage.src = "./images/draggleSprite.png";
-const draggle = new Sprite({
-  position: { x: 800, y: 300 },
-  image: draggleImage,
-  frames: { max: 4, hold: 30 },
-  animate: true,
-  isEnemy: true,
-  name: "Draggle",
-});
-
-const embyImage = new Image();
-embyImage.src = "./images/embySprite.png";
-const emby = new Sprite({
-  position: { x: 300, y: 700 },
-  image: embyImage,
-  frames: { max: 4, hold: 30 },
-  animate: true,
-  name: "Emby",
-});
+const draggle = new Monster(monsters.Draggle);
+const emby = new Monster(monsters.Emby);
 
 const renderedSprites = [draggle, emby];
+
+emby.attacks.forEach((attack) => {
+  const button = document.createElement("button");
+  button.innerHTML = attack.name;
+  document.querySelector("#attacksBox").append(button);
+});
 
 const animateBattle = () => {
   window.requestAnimationFrame(animateBattle);
@@ -55,6 +43,14 @@ document.querySelectorAll("button").forEach((button) => {
     queue.push(() => {
       draggle.attack({
         attack: attacks.Tackle,
+        recipient: emby,
+        renderedSprites,
+      });
+    });
+
+    queue.push(() => {
+      draggle.attack({
+        attack: attacks.Fireball,
         recipient: emby,
         renderedSprites,
       });

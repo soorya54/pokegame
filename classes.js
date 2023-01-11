@@ -6,9 +6,8 @@ class Sprite {
     frames = { max: 1, hold: 10 },
     animate = false,
     sprites,
-    isEnemy = false,
     rotation = 0,
-    name,
+    isFireball = false,
     dWidth,
     dHeight,
   }) {
@@ -24,13 +23,15 @@ class Sprite {
     this.animate = animate;
     this.sprites = sprites;
     this.opacity = 1;
-    this.health = 100;
-    this.isEnemy = isEnemy;
+
     this.rotation = rotation;
-    this.name = name;
 
     this.dWidth = dWidth;
     this.dHeight = dHeight;
+
+    if (isFireball) {
+      console.log(this);
+    }
   }
 
   draw = () => {
@@ -69,7 +70,35 @@ class Sprite {
       else this.frames.val = 0;
     }
   };
+}
 
+class Monster extends Sprite {
+  constructor({
+    position,
+    velocity,
+    image,
+    frames = { max: 1, hold: 10 },
+    animate = false,
+    sprites,
+    rotation = 0,
+    isEnemy = false,
+    name,
+    attacks,
+  }) {
+    super({
+      position,
+      velocity,
+      image,
+      frames,
+      animate,
+      sprites,
+      rotation,
+    });
+    this.health = 100;
+    this.isEnemy = isEnemy;
+    this.name = name;
+    this.attacks = attacks;
+  }
   attack = ({ attack, recipient, renderedSprites }) => {
     document.querySelector("#dialogueBox").style.display = "block";
     document.querySelector("#dialogueBox").innerHTML =
@@ -128,14 +157,20 @@ class Sprite {
           frames: { max: 4, hold: 10 },
           animate: true,
           rotation,
+          isFireball: true,
         });
         renderedSprites.splice(1, 0, fireball);
+        // renderedSprites.push(fireball)
+        // console.log(renderedSprites);
 
         gsap.to(fireball.position, {
           x: recipient.position.x,
           y: recipient.position.y,
           onComplete: () => {
             renderedSprites.splice(1, 1);
+            // console.log(renderedSprites);
+
+            // renderedSprites.pop();
 
             // enemy gets hit
             gsap.to(healthBar, {

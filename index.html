@@ -1,16 +1,44 @@
 <!DOCTYPE html>
   <head>
-    <title>Pokegame</title>
-  </head>
-  <body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
     <style>
+      * {
+        font-family: "Press Start 2P", cursive;
+      }
+
       body {
         background-color: black;
       }
+
+      h1 {
+        margin: 0;
+      }
+
+      button {
+        border: none;
+        font-size: 16px;
+      }
     </style>
+
+    <title>Pokegame</title>
+  </head>
+  <body>
     <div style="display: inline-block; position: relative;">
       <div id="overlappingDiv" style="background-color: black; position: absolute; top: 0; right: 0; bottom: 0; left: 0; opacity: 0; pointer-events: none;"></div>
       <canvas></canvas>
+
+      <div style="background-color: white; height: 140px; position: absolute; right: 0; bottom: 0; left: 0; border: 4px black solid; display: flex;">
+        <div style="width: 66.66%; display: grid; grid-template-columns: repeat(2, 1fr);">
+          <button>Attack1</button>
+          <button>Attack2</button>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; width: 33.33%; border-left: 4px black solid;">
+          <h1 style="font-size: 16px;">Attack Type</h1>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

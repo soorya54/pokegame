@@ -122,6 +122,10 @@ const rectangularCollision = ({ rectangle1, rectangle2 }) => {
   );
 };
 
+const battle = {
+  initiated: false,
+};
+
 const animate = () => {
   window.requestAnimationFrame(animate);
   background.draw();
@@ -134,6 +138,12 @@ const animate = () => {
   player.draw();
   foreground.draw();
 
+  let moving = true;
+  player.moving = false;
+
+  if (battle.initiated) return;
+
+  // activate a battle
   if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed) {
     for (let i = 0; i < battleZones.length; i++) {
       const battleZone = battleZones[i];
@@ -153,16 +163,17 @@ const animate = () => {
           rectangle1: player,
           rectangle2: battleZone,
         }) &&
-        overlappingArea > (player.width * player.height) / 2
+        overlappingArea > (player.width * player.height) / 2 &&
+        Math.random() < 0.1
       ) {
         console.log("BZ collision");
+        battle.initiated = true;
+
         break;
       }
     }
   }
 
-  let moving = true;
-  player.moving = false;
   if (keys.w.pressed && lastKey === "w") {
     player.moving = true;
     player.image = player.sprites.up;

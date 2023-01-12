@@ -109,6 +109,7 @@ class Monster extends Sprite {
     });
 
     audio.victory.play();
+    audio.battle.stop();
   };
 
   attack = ({ attack, recipient, renderedSprites }) => {

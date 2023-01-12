@@ -11,13 +11,15 @@ class Sprite {
     dHeight,
   }) {
     this.position = position;
-    this.image = image;
+    this.image = new Image();
     this.frames = { ...frames, val: 0, elapsed: 0 };
 
     this.image.onload = () => {
       this.width = this.image.width / this.frames.max;
       this.height = this.image.height;
     };
+
+    this.image.src = image.src;
 
     this.animate = animate;
     this.sprites = sprites;
@@ -94,12 +96,27 @@ class Monster extends Sprite {
     this.name = name;
     this.attacks = attacks;
   }
+
+  faint = () => {
+    document.querySelector("#dialogueBox").style.display = "block";
+    document.querySelector("#dialogueBox").innerHTML = this.name + " fainted!";
+
+    gsap.to(this.position, {
+      y: this.position.y + 20,
+    });
+    gsap.to(this, {
+      opacity: 0,
+    });
+
+    audio.victory.play();
+  };
+
   attack = ({ attack, recipient, renderedSprites }) => {
     document.querySelector("#dialogueBox").style.display = "block";
     document.querySelector("#dialogueBox").innerHTML =
       this.name + " used " + attack.name;
 
-    this.health -= attack.damage;
+    recipient.health -= attack.damage;
     let healthBar = this.isEnemy ? "#playerHealthBar" : "#enemyHealthBar";
 
     let rotation = this.isEnemy ? -2.2 : 1;
@@ -118,8 +135,9 @@ class Monster extends Sprite {
             duration: 0.1,
             onComplete: () => {
               // enemy gets hit
+              audio.tackleHit.play();
               gsap.to(healthBar, {
-                width: this.health + "%",
+                width: recipient.health + "%",
               });
 
               gsap.to(recipient.position, {
@@ -143,6 +161,7 @@ class Monster extends Sprite {
         break;
 
       case "Fireball":
+        audio.initFireball.play();
         const fireballImage = new Image();
         fireballImage.src = "./images/fireball.png";
 
@@ -162,8 +181,9 @@ class Monster extends Sprite {
             renderedSprites.splice(1, 1);
 
             // enemy gets hit
+            audio.fireballHit.play();
             gsap.to(healthBar, {
-              width: this.health + "%",
+              width: recipient.health + "%",
             });
 
             gsap.to(recipient.position, {

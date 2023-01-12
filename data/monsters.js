@@ -7,7 +7,9 @@ draggleImage.src = "./images/draggleSprite.png";
 const monsters = {
   Emby: {
     position: { x: 300, y: 700 },
-    image: embyImage,
+    image: {
+      src: "./images/embySprite.png",
+    },
     frames: { max: 4, hold: 30 },
     animate: true,
     name: "Emby",
@@ -15,7 +17,9 @@ const monsters = {
   },
   Draggle: {
     position: { x: 800, y: 300 },
-    image: draggleImage,
+    image: {
+      src: "./images/draggleSprite.png",
+    },
     frames: { max: 4, hold: 30 },
     animate: true,
     isEnemy: true,

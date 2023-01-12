@@ -17,8 +17,8 @@ for (let i = 0; i < battleZonesData.length; i += 70) {
 }
 
 const offset = {
-  x: -735,
-  y: -650,
+  x: canvas.width / 2 - 3360 / 2,
+  y: canvas.height / 2 - 1920 / 2,
 };
 
 const boundaries = [];
@@ -53,6 +53,8 @@ battleZonesMap.forEach((row, i) => {
   });
 });
 
+let clicked = false;
+
 const image = new Image();
 image.src = "./images/pelletTown.png";
 
@@ -77,7 +79,7 @@ const player = new Sprite({
     y: canvas.height / 2 - 68 / 2,
   },
   image: playerDownImage,
-  frames: { max: 4 },
+  frames: { max: 4, hold: 10 },
   sprites: {
     up: playerUpImage,
     left: playerLeftImage,
@@ -145,6 +147,11 @@ const animate = () => {
 
   // activate a battle
   if (keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed) {
+    if (!clicked) {
+      audio.Map.play();
+      clicked = true;
+    }
+
     for (let i = 0; i < battleZones.length; i++) {
       const battleZone = battleZones[i];
       const overlappingArea =
@@ -169,6 +176,10 @@ const animate = () => {
         // deactivate current animation loop
         window.cancelAnimationFrame(animationId);
 
+        audio.Map.stop();
+        audio.initBattle.play();
+        audio.battle.play();
+
         battle.initiated = true;
 
         gsap.to("#overlappingDiv", {
@@ -182,6 +193,7 @@ const animate = () => {
               duration: 0.4,
               onComplete() {
                 // activate a new animation loop
+                initBattle();
                 animateBattle();
                 gsap.to("#overlappingDiv", {
                   opacity: 0,
@@ -276,7 +288,7 @@ const animate = () => {
   }
 };
 
-// animate();
+animate();
 
 let lastKey = "";
 
@@ -315,5 +327,12 @@ window.addEventListener("keyup", (e) => {
     case "d":
       keys.d.pressed = false;
       break;
+  }
+});
+
+addEventListener("click", () => {
+  if (!clicked) {
+    audio.Map.play();
+    clicked = true;
   }
 });

@@ -4,9 +4,14 @@ embyImage.src = "./images/embySprite.png";
 const draggleImage = new Image();
 draggleImage.src = "./images/draggleSprite.png";
 
+cWidth = document.documentElement.clientWidth;
+cHeight = document.documentElement.clientHeight;
+console.log(cWidth, cHeight);
+// console.log(cHeight / 4, (cWidth * 3) / 4);
+
 const monsters = {
   Emby: {
-    position: { x: 300, y: 700 },
+    position: { x: cWidth / 4, y: (cHeight * 3) / 4 },
     image: {
       src: "./images/embySprite.png",
     },
@@ -16,7 +21,7 @@ const monsters = {
     attacks: [attacks.Tackle, attacks.Fireball],
   },
   Draggle: {
-    position: { x: 800, y: 300 },
+    position: { x: (cWidth * 3) / 4, y: cHeight / 4 },
     image: {
       src: "./images/draggleSprite.png",
     },
